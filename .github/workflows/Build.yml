@@ -21,7 +21,7 @@ jobs:
       run: dotnet tool restore
 
     - name: Build and Test
-      run: dotnet build transport/transport
+      run: dotnet  build transport/transport
       
     - name: Test
       run: dotnet  cake --target=Test --test-run-name=Windows --configuration=Release
@@ -41,8 +41,10 @@ jobs:
         name: Test results (Windows)
         path: test-results
       # Use always() to always run this step to publish test results when there are test failures
-      if: ${{ always() }}
- 
+      if: ${{ always() }}\
+    - name: Coveralls     
+      run: coveralls -t ${{ secrets.coveralls_token }} --root . -E ".*external.*" -E ".*tests.*"
+
   build:
     name: Build
     runs-on: windows-latest
