@@ -6,20 +6,23 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup .NET Core SDK 6.0.x
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '5.0.x'
 
     - name: Install dotnet tools
       run: dotnet tool restore
 
     - name: Build and Test
-      run: dotnet  build transport/transport
+      run: dotnet build ./transport/transport
       
     - name: Test
+      run: dotnet test ./transport/NunitMain
+      
+    - name: Test2
       run: dotnet  cake --target=Test --test-run-name=Windows --configuration=Release
       
     - name: Package
